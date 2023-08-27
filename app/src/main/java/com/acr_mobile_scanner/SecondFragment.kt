@@ -14,6 +14,8 @@ import android.content.Intent
  */
 class SecondFragment : Fragment() {
 
+    private val scanner: Scanner? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,12 +34,13 @@ class SecondFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val result: IntentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        val result: IntentResult =
+            IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         if (result != null) {
             if (result.contents == null) {
                 // Handle cancellation
             } else {
-                // Handle scanned QR code
+                decodeMessage(result.contents)
             }
         }
     }
