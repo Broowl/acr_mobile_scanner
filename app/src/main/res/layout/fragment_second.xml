@@ -11,5 +11,9 @@
         android:layout_height="match_parent"
         android:padding="16dp">
 
+        <SurfaceView
+            android:id="@+id/surfaceView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
