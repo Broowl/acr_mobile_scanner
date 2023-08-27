@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
 import android.content.Intent
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResultListener
 import java.util.Date
 import javax.xml.validation.Validator
 
@@ -16,7 +18,7 @@ import javax.xml.validation.Validator
  */
 class SecondFragment : Fragment() {
 
-    private var scanner: Scanner? = null
+    private var _scanner: Scanner? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,15 +33,12 @@ class SecondFragment : Fragment() {
         integrator.setBeepEnabled(false)
         integrator.initiateScan()
 
-        val eventCharacteristics = EventCharacteristics("test", strToDate("2023-08-27"))
-        val publicKey = "-----BEGIN PUBLIC KEY-----\n" +
-                "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDcliT764RZu5Zl0LfGjJeIamdO\n" +
-                "WExomreVs8NqbHb2ssFvpRtRZdYOrhLcNXoCggMGjBVzZp6ajdL6SHnKO7UnvTSa\n" +
-                "bz/vLuTuqzfOQIhLSkHEz5/O7yPokFldk9pkAvd0pOwwZY1tQxLmQR7Gt0DqNC5K\n" +
-                "PR9tEhRRLnARVw9e9wIDAQAB\n" +
-                "-----END PUBLIC KEY-----"
-        val validator = SignatureValidator(publicKey)
-        scanner = Scanner(eventCharacteristics, validator)
+        setFragmentResultListener("requestConfiguration") { _, bundle ->
+            val validator = SignatureValidator(bundle.getString("publicKey", ""))
+            val eventName = bundle.getString("eventName", "")
+            val eventDate = strToDate(bundle.getString("eventDate", ""))
+            _scanner = Scanner(EventCharacteristics(eventName,eventDate), validator)
+        }
 
         return view
     }
@@ -52,7 +51,7 @@ class SecondFragment : Fragment() {
             if (result.contents == null) {
                 // Handle cancellation
             } else {
-                scanner?.processQrCode(result.contents)
+                _scanner?.processQrCode(result.contents)
             }
         }
     }
