@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.acr_mobile_scanner.databinding.FragmentFirstBinding
@@ -20,6 +21,7 @@ class FirstFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private val viewModel: EntityViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,13 +50,10 @@ class FirstFragment : Fragment() {
         binding.editTextPublicKey.text.append(publicKey)
 
         binding.configurationOkButton.setOnClickListener {
-            setFragmentResult(
-                "requestConfiguration",
-                bundleOf(
-                    "eventName" to  binding.editTextEventName.text.toString(),
-                    "eventDate" to binding.editTextEventDate.text.toString(),
-                    "publicKey" to binding.editTextPublicKey.text.toString()
-                )
+            viewModel.initializeScanner(
+                binding.editTextEventName.text.toString(),
+                strToDate(binding.editTextEventDate.text.toString()),
+                binding.editTextPublicKey.text.toString()
             )
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }

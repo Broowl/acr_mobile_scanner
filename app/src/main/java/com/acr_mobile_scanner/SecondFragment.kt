@@ -10,15 +10,14 @@ import com.google.zxing.integration.android.IntentResult
 import android.content.Intent
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
-import java.util.Date
-import javax.xml.validation.Validator
+import androidx.navigation.fragment.findNavController
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class SecondFragment : Fragment() {
 
-    private var _scanner: Scanner? = null
+    private val _viewModel: EntityViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,13 +32,6 @@ class SecondFragment : Fragment() {
         integrator.setBeepEnabled(false)
         integrator.initiateScan()
 
-        setFragmentResultListener("requestConfiguration") { _, bundle ->
-            val validator = SignatureValidator(bundle.getString("publicKey", ""))
-            val eventName = bundle.getString("eventName", "")
-            val eventDate = strToDate(bundle.getString("eventDate", ""))
-            _scanner = Scanner(EventCharacteristics(eventName,eventDate), validator)
-        }
-
         return view
     }
 
@@ -47,12 +39,16 @@ class SecondFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         val result: IntentResult =
             IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-        if (result != null) {
-            if (result.contents == null) {
-                // Handle cancellation
-            } else {
-                _scanner?.processQrCode(result.contents)
+        val scanner = _viewModel.scanner.value
+        if (result?.contents != null && scanner != null) {
+            val scanResult = scanner.processQrCode(result.contents)
+            if (scanResult.isSuccess) {
+                findNavController().navigate(R.id.action_SecondFragment_to_ResultSuccessFragment)
+            }
+            else{
+                findNavController().navigate(R.id.action_SecondFragment_to_ResultErrorFragment)
             }
         }
     }
+
 }

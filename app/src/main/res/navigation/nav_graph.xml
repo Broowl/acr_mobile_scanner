@@ -24,5 +24,31 @@
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
+        <action
+            android:id="@+id/action_SecondFragment_to_ResultSuccessFragment"
+            app:destination="@id/ResultSuccessFragment" />
+        <action
+            android:id="@+id/action_SecondFragment_to_ResultErrorFragment"
+            app:destination="@id/ResultErrorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ResultSuccessFragment"
+        android:name="com.acr_mobile_scanner.ResultSuccessFragment"
+        android:label="@string/result_fragment_label"
+        tools:layout="@layout/fragment_result_success">
+
+        <action
+            android:id="@+id/action_ResultSuccessFragment_to_SecondFragment"
+            app:destination="@id/SecondFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ResultErrorFragment"
+        android:name="com.acr_mobile_scanner.ResultErrorFragment"
+        android:label="@string/result_fragment_label"
+        tools:layout="@layout/fragment_result_error">
+
+        <action
+            android:id="@+id/action_ResultErrorFragment_to_SecondFragment"
+            app:destination="@id/SecondFragment" />
     </fragment>
 </navigation>

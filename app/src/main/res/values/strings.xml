@@ -4,6 +4,7 @@
     <!-- Strings used for fragments for navigation -->
     <string name="configuration_fragment_label">Konfiguration</string>
     <string name="scanner_fragment_label">Scanner</string>
+    <string name="result_fragment_label">Scan Result</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
@@ -12,5 +13,6 @@
     <string name="public_key">public key</string>
     <string name="event_name_hint">Party</string>
     <string name="configuration_ok">Ok</string>
-
+    <string name="result_success">Result: Success</string>
+    <string name="result_error">Result: Error</string>
 </resources>
