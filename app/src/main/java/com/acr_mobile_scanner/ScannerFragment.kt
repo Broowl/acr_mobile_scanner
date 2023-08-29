@@ -60,6 +60,7 @@ class ScannerFragment : Fragment() {
         } else {
             startCamera()
         }
+
         return view
     }
 
@@ -149,6 +150,7 @@ class ScannerFragment : Fragment() {
         super.onDestroy()
         cameraExecutor!!.shutdown()
     }
+
 
     companion object {
         private const val CAMERA_PERMISSION_REQUEST_CODE = 100
