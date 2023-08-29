@@ -31,7 +31,7 @@ class ResultSuccessFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.resultSuccessOkButton.setOnClickListener {
-            findNavController().navigate(R.id.action_ResultSuccessFragment_to_SecondFragment)
+            findNavController().navigate(R.id.action_ResultSuccessFragment_to_ScannerFragment)
         }
     }
 

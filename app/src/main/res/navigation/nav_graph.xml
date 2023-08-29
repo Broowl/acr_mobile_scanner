@@ -3,32 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/ConfigurationFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.acr_mobile_scanner.FirstFragment"
+        android:id="@+id/ConfigurationFragment"
+        android:name="com.acr_mobile_scanner.ConfigurationFragment"
         android:label="@string/configuration_fragment_label"
-        tools:layout="@layout/fragment_first">
+        tools:layout="@layout/fragment_configuration">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_ConfigurationFragment_to_ScannerFragment"
+            app:destination="@id/ScannerFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.acr_mobile_scanner.SecondFragment"
+        android:id="@+id/ScannerFragment"
+        android:name="com.acr_mobile_scanner.ScannerFragment"
         android:label="@string/scanner_fragment_label"
-        tools:layout="@layout/fragment_second">
+        tools:layout="@layout/fragment_scanner">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_ScannerFragment_to_ConfigurationFragment"
+            app:destination="@id/ConfigurationFragment" />
         <action
-            android:id="@+id/action_SecondFragment_to_ResultSuccessFragment"
+            android:id="@+id/action_ScannerFragment_to_ResultSuccessFragment"
             app:destination="@id/ResultSuccessFragment" />
         <action
-            android:id="@+id/action_SecondFragment_to_ResultErrorFragment"
+            android:id="@+id/action_ScannerFragment_to_ResultErrorFragment"
             app:destination="@id/ResultErrorFragment" />
     </fragment>
     <fragment
@@ -38,8 +38,8 @@
         tools:layout="@layout/fragment_result_success">
 
         <action
-            android:id="@+id/action_ResultSuccessFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_ResultSuccessFragment_to_ScannerFragment"
+            app:destination="@id/ScannerFragment" />
     </fragment>
     <fragment
         android:id="@+id/ResultErrorFragment"
@@ -48,7 +48,7 @@
         tools:layout="@layout/fragment_result_error">
 
         <action
-            android:id="@+id/action_ResultErrorFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_ResultErrorFragment_to_ScannerFragment"
+            app:destination="@id/ScannerFragment" />
     </fragment>
 </navigation>

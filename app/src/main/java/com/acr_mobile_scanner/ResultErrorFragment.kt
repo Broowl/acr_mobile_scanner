@@ -29,7 +29,7 @@ class ResultErrorFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.resultErrorOkButton.setOnClickListener {
-            findNavController().navigate(R.id.action_ResultErrorFragment_to_SecondFragment)
+            findNavController().navigate(R.id.action_ResultErrorFragment_to_ScannerFragment)
         }
     }
 

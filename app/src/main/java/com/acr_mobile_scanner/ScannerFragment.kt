@@ -9,13 +9,12 @@ import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
 import android.content.Intent
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class SecondFragment : Fragment() {
+class ScannerFragment : Fragment() {
 
     private val _viewModel: EntityViewModel by activityViewModels()
 
@@ -23,7 +22,7 @@ class SecondFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_second, container, false)
+        val view = inflater.inflate(R.layout.fragment_scanner, container, false)
 
         val integrator = IntentIntegrator.forSupportFragment(this)
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
@@ -43,10 +42,10 @@ class SecondFragment : Fragment() {
         if (result?.contents != null && scanner != null) {
             val scanResult = scanner.processQrCode(result.contents)
             if (scanResult.isSuccess) {
-                findNavController().navigate(R.id.action_SecondFragment_to_ResultSuccessFragment)
+                findNavController().navigate(R.id.action_ScannerFragment_to_ResultSuccessFragment)
             }
             else{
-                findNavController().navigate(R.id.action_SecondFragment_to_ResultErrorFragment)
+                findNavController().navigate(R.id.action_ScannerFragment_to_ResultErrorFragment)
             }
         }
     }
