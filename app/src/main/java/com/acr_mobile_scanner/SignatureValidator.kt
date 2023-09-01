@@ -25,19 +25,19 @@ fun convertPemToPublicKey(pemKey: String): PublicKey? {
 }
 
 class SignatureValidator constructor(publicKeyPem: String) {
-    private val publicKey: PublicKey?
+    private val _publicKey: PublicKey?
 
     init {
-        publicKey = convertPemToPublicKey(publicKeyPem)
+        _publicKey = convertPemToPublicKey(publicKeyPem)
     }
 
     fun verifyMessage(message: String, signature: ByteArray): Boolean {
-        if (publicKey == null){
+        if (_publicKey == null){
             return false
         }
         return try {
             val signatureInstance = Signature.getInstance("SHA256withRSAandMGF1")
-            signatureInstance.initVerify(publicKey)
+            signatureInstance.initVerify(_publicKey)
             signatureInstance.update(message.toByteArray())
 
             signatureInstance.verify(signature)

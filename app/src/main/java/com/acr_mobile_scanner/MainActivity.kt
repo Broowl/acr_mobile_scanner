@@ -8,24 +8,30 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
+import androidx.fragment.app.activityViewModels
 import com.acr_mobile_scanner.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var _appBarConfiguration: AppBarConfiguration
+    private lateinit var _binding: ActivityMainBinding
+    private val _viewModel: EntityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        _viewModel.setLogDir(applicationContext.filesDir.path)
 
-        setSupportActionBar(binding.toolbar)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(_binding.root)
+
+        setSupportActionBar(_binding.toolbar)
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        _appBarConfiguration = AppBarConfiguration(navController.graph)
+        setupActionBarWithNavController(navController, _appBarConfiguration)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -49,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration)
+        return navController.navigateUp(_appBarConfiguration)
                 || super.onSupportNavigateUp()
     }
 }

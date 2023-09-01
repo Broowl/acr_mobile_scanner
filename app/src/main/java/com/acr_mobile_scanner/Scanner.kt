@@ -17,21 +17,26 @@ class ScanResult constructor(isSuccessIn:Boolean, messageIn: String?){
 
 
 class Scanner constructor(
-    private val eventCharacteristics: EventCharacteristics,
-    private val validator: SignatureValidator
+    private val _eventCharacteristics: EventCharacteristics,
+    private val _validator: SignatureValidator,
+    private val _idStorage: IdStorage
 ) {
 
     fun processQrCode(payload: String): ScanResult  {
         var decodeResult = decodeMessage(payload) ?: return ScanResult("Decoding error")
-        if (decodeResult.eventName != eventCharacteristics.name) {
-            return ScanResult("Event name mismatch. Expected: ${eventCharacteristics.name}; Received: ${decodeResult.eventName}")
+        if (decodeResult.eventName != _eventCharacteristics.name) {
+            return ScanResult("Event name mismatch. Expected: ${_eventCharacteristics.name}; Received: ${decodeResult.eventName}")
         }
-        if (decodeResult.eventDate != eventCharacteristics.date) {
-            return ScanResult("Event date mismatch. Expected: ${eventCharacteristics.date}; Received: ${decodeResult.eventDate}")
+        if (decodeResult.eventDate != _eventCharacteristics.date) {
+            return ScanResult("Event date mismatch. Expected: ${_eventCharacteristics.date}; Received: ${decodeResult.eventDate}")
         }
-        val isVerified = validator.verifyMessage(decodeResult.encoded, decodeResult.signature)
+        val isVerified = _validator.verifyMessage(decodeResult.encoded, decodeResult.signature)
         if (!isVerified) {
             return ScanResult("Invalid signature")
+        }
+        val isNotDuplicate = _idStorage.tryAddId(decodeResult.ticketId)
+        if (!isNotDuplicate){
+            return ScanResult("Duplicate ID")
         }
         return ScanResult()
     }

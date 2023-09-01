@@ -1,8 +1,6 @@
 package com.acr_mobile_scanner
 
-/**
- * A simple [Fragment] subclass as the second destination in the navigation.
- */
+
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
@@ -34,11 +32,11 @@ import androidx.navigation.fragment.findNavController
 
 
 class ScannerFragment : Fragment() {
-    private var cameraExecutor: ExecutorService ? = null
-    private var barcodeScanner: BarcodeScanner? = null
+    private var _cameraExecutor: ExecutorService ? = null
+    private var _barcodeScanner: BarcodeScanner? = null
     private val _viewModel: EntityViewModel by activityViewModels()
-    private var camera: Camera? = null
-    private var previewView: PreviewView? = null
+    private var _camera: Camera? = null
+    private var _previewView: PreviewView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +44,7 @@ class ScannerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_scanner, container, false)
-        previewView = view.findViewById(R.id.previewView)
+        _previewView = view.findViewById(R.id.previewView)
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.CAMERA
@@ -66,11 +64,11 @@ class ScannerFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        cameraExecutor = Executors.newSingleThreadExecutor()
+        _cameraExecutor = Executors.newSingleThreadExecutor()
         val options: BarcodeScannerOptions = BarcodeScannerOptions.Builder()
             .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
             .build()
-        barcodeScanner = BarcodeScanning.getClient(options)
+        _barcodeScanner = BarcodeScanning.getClient(options)
     }
 
     private fun startCamera() {
@@ -83,16 +81,16 @@ class ScannerFragment : Fragment() {
         val preview = Preview.Builder()
             .setTargetResolution(Size(640, 480))
             .build()
-        preview.setSurfaceProvider(previewView!!.surfaceProvider)
+        preview.setSurfaceProvider(_previewView!!.surfaceProvider)
         val imageAnalysis: ImageAnalysis = ImageAnalysis.Builder()
             .setTargetResolution(Size(640, 480))
             .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
             .build()
-        imageAnalysis.setAnalyzer(cameraExecutor!!) { imageProxy ->
+        imageAnalysis.setAnalyzer(_cameraExecutor!!) { imageProxy ->
             scanQrCode(imageProxy)
             imageProxy.close()
         }
-        camera = cameraProvider.bindToLifecycle(
+        _camera = cameraProvider.bindToLifecycle(
             requireContext() as LifecycleOwner,
             cameraSelector,
             preview,
@@ -102,7 +100,7 @@ class ScannerFragment : Fragment() {
 
     private fun onBarcodeScanned(barCodes:List<Barcode>){
         for (barcode in barCodes) {
-            val scannedData: String = barcode.getRawValue()!!
+            val scannedData: String = barcode.rawValue!!
             //Toast.makeText(requireContext(), "Scanned: $scannedData", Toast.LENGTH_SHORT)
             //   .show()
             val scanResult =  _viewModel.scanner.value!!.processQrCode(scannedData)
@@ -118,10 +116,10 @@ class ScannerFragment : Fragment() {
     @SuppressLint("UnsafeOptInUsageError")
     private fun scanQrCode(imageProxy: ImageProxy) {
         val image: InputImage = InputImage.fromMediaImage(
-            imageProxy.getImage()!!,
-            imageProxy.getImageInfo().getRotationDegrees()
+            imageProxy.image!!,
+            imageProxy.imageInfo.rotationDegrees
         )
-        barcodeScanner!!.process(image)
+        _barcodeScanner!!.process(image)
             .addOnSuccessListener { barCodes ->
                 onBarcodeScanned(barCodes)
             }
@@ -134,7 +132,7 @@ class ScannerFragment : Fragment() {
         grantResults: IntArray
     ) {
         if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
-            if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startCamera()
             } else {
                 Toast.makeText(
@@ -148,7 +146,7 @@ class ScannerFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        cameraExecutor!!.shutdown()
+        _cameraExecutor!!.shutdown()
     }
 
 
