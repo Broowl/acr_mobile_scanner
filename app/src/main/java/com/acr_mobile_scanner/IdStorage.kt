@@ -2,11 +2,17 @@ package com.acr_mobile_scanner
 
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
+import java.io.BufferedReader
+import java.io.BufferedWriter
 import java.io.File
+import java.io.FileReader
+import java.io.FileWriter
+
 
 class IdStorage(private val _filesDir: String) {
     private var _eventCharacteristics: EventCharacteristics? = null
-    private var _file: File? = null
+    private var _fileWriter: BufferedWriter? = null
+    private var _filePath: String? = null
     private val _storage: MutableSet<UInt> = HashSet()
 
 
@@ -19,30 +25,34 @@ class IdStorage(private val _filesDir: String) {
     }
 
     fun setEventCharacteristics(characteristics: EventCharacteristics) {
+        _fileWriter?.close()
         _eventCharacteristics = characteristics
         saveOpen()
     }
 
     private fun add(id: UInt) {
-        val file = _file ?: return
+        val fileWriter = _fileWriter ?: return
         val time = Calendar.getInstance().time
         val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         val timeStamp = formatter.format(time)
         _storage.add(id)
-        file.writer().append("${timeStamp},${id}\n")
-        file.writer().flush()
+        fileWriter.appendLine("${timeStamp},${id}")
+        fileWriter.flush()
     }
 
     private fun saveOpen() {
         val fileName = getFileName() ?: return
-        val file = File(_filesDir, fileName)
-        if (file.exists()) // todo: check file age
-        {
-            _file = file
+        val logDir = File(_filesDir, "logs")
+        logDir.mkdirs()
+        val file = File(logDir, fileName)
+        if (file.exists()) {
+            _fileWriter = BufferedWriter(FileWriter(file.absolutePath, true))
+            _filePath = file.absolutePath
             readFile()
         } else {
             file.createNewFile()
-            _file = file
+            _fileWriter = BufferedWriter(FileWriter(file.absolutePath, true))
+            _filePath = file.absolutePath
         }
     }
 
@@ -53,13 +63,13 @@ class IdStorage(private val _filesDir: String) {
     }
 
     private fun readFile() {
+        val fileReader = BufferedReader(FileReader(_filePath))
         val matcher = Regex(".*,(.*)")
-        _file?.bufferedReader()?.useLines { lines ->
-            lines.map { line ->
-                val match = matcher.find(line)?.groupValues?.get(1)
-                if (match != null) {
-                    _storage.add(match.toUInt())
-                }
+        val lines = fileReader.readText().split('\n')
+        lines.map { line ->
+            val match = matcher.find(line)?.groupValues?.get(1)
+            if (match != null) {
+                _storage.add(match.toUInt())
             }
         }
     }
