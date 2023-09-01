@@ -1,69 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/viewTextEventName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/event_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/editTextEventName"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editTextEventName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:autofillHints=""
         android:ems="10"
-        android:hint="@string/event_name"
+        android:hint="@string/event_name_hint"
         android:inputType="text"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextEventDate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/viewTextEventName" />
+
+    <TextView
+        android:id="@+id/viewTextEventDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/event_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/editTextEventDateYear"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEventName" />
 
     <EditText
-        android:id="@+id/editTextEventDate"
-        android:layout_width="wrap_content"
+        android:id="@+id/editTextEventDateYear"
+        android:layout_width="96dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
         android:autofillHints=""
         android:ems="10"
-        android:hint="@string/event_date"
-        android:inputType="date"
+        android:hint="@string/event_date_year_hint"
+        android:inputType="number"
         android:minHeight="48dp"
+        app:layout_constraintStart_toStartOf="@+id/editTextEventName"
+        app:layout_constraintTop_toBottomOf="@+id/viewTextEventDate" />
+
+    <TextView
+        android:id="@+id/viewTextEventSeparator1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/event_date_separator"
+        android:translationY="10dp"
+        app:layout_constraintStart_toEndOf="@+id/editTextEventDateYear"
+        app:layout_constraintTop_toBottomOf="@+id/viewTextEventDate" />
+
+    <EditText
+        android:id="@+id/editTextEventDateMonth"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/event_date_month_hint"
+        android:inputType="number"
+        android:minHeight="48dp"
+        app:layout_constraintStart_toEndOf="@+id/viewTextEventSeparator1"
+        app:layout_constraintTop_toBottomOf="@+id/viewTextEventDate" />
+
+    <TextView
+        android:id="@+id/viewTextEventSeparator2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/event_date_separator"
+        android:translationY="10dp"
+        app:layout_constraintStart_toEndOf="@+id/editTextEventDateMonth"
+        app:layout_constraintTop_toBottomOf="@+id/viewTextEventDate" />
+
+    <EditText
+        android:id="@+id/editTextEventDateDay"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/event_date_day_hint"
+        android:inputType="number"
+        android:minHeight="48dp"
+        app:layout_constraintStart_toEndOf="@+id/editTextEventDateMonth"
+        app:layout_constraintTop_toBottomOf="@+id/viewTextEventDate" />
+
+    <TextView
+        android:id="@+id/viewTextPublicKey"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/public_key"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEventName" />
+        app:layout_constraintStart_toStartOf="@+id/editTextPublicKey"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEventDateDay" />
 
     <EditText
         android:id="@+id/editTextPublicKey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:autofillHints=""
         android:ems="10"
-        android:hint="@string/public_key"
+        android:hint="@string/public_key_hint"
         android:inputType="text"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEventDate" />
+        app:layout_constraintTop_toBottomOf="@+id/viewTextPublicKey" />
 
     <Button
         android:id="@+id/configurationOkButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="76dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/configuration_ok"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEventDate" />
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

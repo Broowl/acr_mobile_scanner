@@ -8,10 +8,15 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="event_name">Veranstaltungsname</string>
-    <string name="event_date">Veranstaltungsdatum</string>
-    <string name="public_key">public key</string>
-    <string name="event_name_hint">Party</string>
+    <string name="event_name">Veranstaltungsname:</string>
+    <string name="event_name_hint">Beispielkonzert</string>
+    <string name="event_date">Veranstaltungsdatum:</string>
+    <string name="event_date_year_hint">YYYY</string>
+    <string name="event_date_month_hint">MM</string>
+    <string name="event_date_day_hint">DD</string>
+    <string name="event_date_separator">-</string>
+    <string name="public_key">Public key:</string>
+    <string name="public_key_hint">-----BEGIN PUBLIC KEY----- ...</string>
     <string name="configuration_ok">Ok</string>
     <string name="result_success">Result: Success</string>
     <string name="result_error">Result: Error</string>
