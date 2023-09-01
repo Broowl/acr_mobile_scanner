@@ -6,19 +6,19 @@ import androidx.lifecycle.ViewModel
 import java.util.Date
 
 class EntityViewModel : ViewModel() {
-    private val _scanner = MutableLiveData<Scanner>()
-    private val _idStorage = MutableLiveData<IdStorage>()
-    val scanner: LiveData<Scanner> get() = _scanner
+    private var _scanner: Scanner? = null
+    private var _idStorage: IdStorage? = null
+    val scanner: Scanner? get() = _scanner
 
     fun setLogDir(logDir: String) {
-        _idStorage.value = IdStorage(logDir)
+        _idStorage = IdStorage(logDir)
     }
 
     fun initializeScanner(eventName: String, eventDate: Date, publicKey: String) {
-        val idStorage = _idStorage.value ?: return
+        val idStorage = _idStorage ?: return
         val validator = SignatureValidator(publicKey)
         val characteristics = EventCharacteristics(eventName, eventDate)
         idStorage.setEventCharacteristics(characteristics)
-        _scanner.value = Scanner(characteristics, validator, idStorage)
+        _scanner = Scanner(characteristics, validator, idStorage)
     }
 }

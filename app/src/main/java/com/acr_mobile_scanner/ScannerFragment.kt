@@ -4,6 +4,7 @@ package com.acr_mobile_scanner
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Size
 import android.view.LayoutInflater
@@ -29,14 +30,16 @@ import com.google.mlkit.vision.common.InputImage
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import androidx.navigation.fragment.findNavController
+import java.util.Date
 
 
 class ScannerFragment : Fragment() {
-    private var _cameraExecutor: ExecutorService ? = null
+    private var _cameraExecutor: ExecutorService? = null
     private var _barcodeScanner: BarcodeScanner? = null
     private val _viewModel: EntityViewModel by activityViewModels()
     private var _camera: Camera? = null
     private var _previewView: PreviewView? = null
+    private var _lastScan: Date? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -98,16 +101,20 @@ class ScannerFragment : Fragment() {
         )
     }
 
-    private fun onBarcodeScanned(barCodes:List<Barcode>){
+    private fun onBarcodeScanned(barCodes: List<Barcode>) {
         for (barcode in barCodes) {
             val scannedData: String = barcode.rawValue!!
             //Toast.makeText(requireContext(), "Scanned: $scannedData", Toast.LENGTH_SHORT)
             //   .show()
-            val scanResult =  _viewModel.scanner.value!!.processQrCode(scannedData)
+            val scanResult = _viewModel.scanner!!.processQrCode(scannedData)
+            val time = Calendar.getInstance().time
+            val lastScan = _lastScan
+            if (lastScan != null && (lastScan.time - time.time < 1000)){
+                return // avoid rapid calls to the navigation controller since it can cause a crash
+            }
             if (scanResult.isSuccess) {
                 findNavController().navigate(R.id.action_ScannerFragment_to_ResultSuccessFragment)
-            }
-            else{
+            } else {
                 findNavController().navigate(R.id.action_ScannerFragment_to_ResultErrorFragment)
             }
         }

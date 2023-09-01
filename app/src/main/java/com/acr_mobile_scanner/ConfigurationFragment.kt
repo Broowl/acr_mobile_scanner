@@ -1,5 +1,7 @@
 package com.acr_mobile_scanner
 
+import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.preference.PreferenceManager
 import androidx.fragment.app.Fragment
@@ -32,19 +34,9 @@ class ConfigurationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // todo: remove those lines
-        val eventName = "test"
-        val eventDate = "2023-08-27"
-        // val eventDate = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
-        // val publicKey = sharedPreferences.getString("public_key", "")
-        val publicKey = "-----BEGIN PUBLIC KEY-----\n" +
-                "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDcliT764RZu5Zl0LfGjJeIamdO\n" +
-                "WExomreVs8NqbHb2ssFvpRtRZdYOrhLcNXoCggMGjBVzZp6ajdL6SHnKO7UnvTSa\n" +
-                "bz/vLuTuqzfOQIhLSkHEz5/O7yPokFldk9pkAvd0pOwwZY1tQxLmQR7Gt0DqNC5K\n" +
-                "PR9tEhRRLnARVw9e9wIDAQAB\n" +
-                "-----END PUBLIC KEY-----"
-        binding.editTextEventName.text.append(eventName)
+        val eventDate = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val publicKey = sharedPreferences.getString("public_key", "")
         binding.editTextEventDate.text.append(eventDate)
         binding.editTextPublicKey.text.append(publicKey)
 
@@ -52,7 +44,7 @@ class ConfigurationFragment : Fragment() {
             val eventName = binding.editTextEventName.text.toString()
             val eventDate = binding.editTextEventDate.text.toString()
             val publicKey = binding.editTextPublicKey.text.toString()
-            sharedPreferences.edit().putString("public_key", publicKey)
+            sharedPreferences.edit().putString("public_key", publicKey).apply()
             _viewModel.initializeScanner(eventName, strToDate(eventDate), publicKey)
             findNavController().navigate(R.id.action_ConfigurationFragment_to_ScannerFragment)
         }
