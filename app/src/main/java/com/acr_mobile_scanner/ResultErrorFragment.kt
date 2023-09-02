@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.acr_mobile_scanner.databinding.FragmentResultErrorBinding
 
@@ -27,6 +28,15 @@ class ResultErrorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setFragmentResultListener("scan_result") { _, bundle ->
+            // We use a String here, but any type that can be put in a Bundle is supported.
+            val result = bundle.getString("message")
+            if (result != null){
+                _binding?.textViewResultErrorMessage?.text = result
+            }
+            // Do something with the result.
+        }
 
         binding.resultErrorOkButton.setOnClickListener {
             findNavController().navigate(R.id.action_ResultErrorFragment_to_ScannerFragment)

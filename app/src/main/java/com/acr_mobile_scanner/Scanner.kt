@@ -25,10 +25,10 @@ class Scanner constructor(
     fun processQrCode(payload: String): ScanResult  {
         var decodeResult = decodeMessage(payload) ?: return ScanResult("Decoding error")
         if (decodeResult.eventName != _eventCharacteristics.name) {
-            return ScanResult("Event name mismatch. Expected: ${_eventCharacteristics.name}; Received: ${decodeResult.eventName}")
+            return ScanResult("Event name mismatch.\nExpected: ${_eventCharacteristics.name}\nReceived: ${decodeResult.eventName}")
         }
         if (decodeResult.eventDate != _eventCharacteristics.date) {
-            return ScanResult("Event date mismatch. Expected: ${_eventCharacteristics.date}; Received: ${decodeResult.eventDate}")
+            return ScanResult("Event date mismatch.\nExpected: ${_eventCharacteristics.date}\nReceived: ${decodeResult.eventDate}")
         }
         val isVerified = _validator.verifyMessage(decodeResult.encoded, decodeResult.signature)
         if (!isVerified) {

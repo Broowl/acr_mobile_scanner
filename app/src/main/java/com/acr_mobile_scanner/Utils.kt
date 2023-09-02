@@ -6,6 +6,5 @@ import java.util.TimeZone
 
 fun strToDate(value: String): Date {
     val formatter = SimpleDateFormat("yyyy-MM-dd")
-    formatter.timeZone = TimeZone.getTimeZone("UTC")
     return formatter.parse(value)
 }

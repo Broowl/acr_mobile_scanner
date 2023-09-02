@@ -19,8 +19,10 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.LifecycleOwner
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
@@ -115,6 +117,7 @@ class ScannerFragment : Fragment() {
             if (scanResult.isSuccess) {
                 findNavController().navigate(R.id.action_ScannerFragment_to_ResultSuccessFragment)
             } else {
+                setFragmentResult("scan_result", bundleOf("message" to scanResult.errorMessage))
                 findNavController().navigate(R.id.action_ScannerFragment_to_ResultErrorFragment)
             }
         }

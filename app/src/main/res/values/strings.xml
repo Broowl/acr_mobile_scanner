@@ -18,6 +18,6 @@
     <string name="public_key">Public key:</string>
     <string name="public_key_hint">-----BEGIN PUBLIC KEY----- ...</string>
     <string name="configuration_ok">Ok</string>
-    <string name="result_success">Result: Success</string>
-    <string name="result_error">Result: Error</string>
+    <string name="result_success">Success</string>
+    <string name="result_error">Error</string>
 </resources>
