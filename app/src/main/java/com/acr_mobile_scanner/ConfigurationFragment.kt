@@ -11,6 +11,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.CompoundButton
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.acr_mobile_scanner.databinding.FragmentConfigurationBinding
 import java.util.Date
@@ -39,10 +40,18 @@ class ConfigurationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        setFragmentResultListener("key_scan_result") { _, bundle ->
+            val result = bundle.getString("public_key")
+            val decoded = String(unquoteToBytes(result ?: ""))
+            _binding?.editTextPublicKey?.text?.clear()
+            _binding?.editTextPublicKey?.text?.append(decoded)
+            sharedPreferences.edit().putString("public_key", decoded).apply()
+        }
         val publicKey = sharedPreferences.getString("public_key", "")
 
         val displayName = _configurationViewModel.name ?: ""
         val displayDate = _configurationViewModel.date ?: Calendar.getInstance().time
+        val advancedTicked = _configurationViewModel.advancedTicked ?: false
 
         binding.editTextEventName.text.append(displayName)
         binding.editTextEventDateYear.text.append(
@@ -55,11 +64,19 @@ class ConfigurationFragment : Fragment() {
         binding.editTextPublicKey.text.append(publicKey)
         binding.viewTextPublicKey.visibility = INVISIBLE
         binding.editTextPublicKey.visibility = INVISIBLE
+        binding.scanPublicKeyButton.visibility = INVISIBLE
 
         binding.advancedSwitch.setOnCheckedChangeListener { _, checked ->
             val visibility = if (checked) VISIBLE else INVISIBLE
             binding.viewTextPublicKey.visibility = visibility
             binding.editTextPublicKey.visibility = visibility
+            binding.scanPublicKeyButton.visibility = visibility
+            _configurationViewModel.advancedTicked = checked
+        }
+        binding.advancedSwitch.isChecked = advancedTicked
+
+        binding.scanPublicKeyButton.setOnClickListener {
+            findNavController().navigate(R.id.action_ConfigurationFragment_to_KeyScannerFragment)
         }
 
         binding.configurationOkButton.setOnClickListener {
@@ -72,7 +89,8 @@ class ConfigurationFragment : Fragment() {
             val publicKey = binding.editTextPublicKey.text.toString()
             sharedPreferences.edit().putString("public_key", publicKey).apply()
             _entityViewModel.initializeScanner(eventName, eventDate, publicKey)
-            _configurationViewModel.set(eventName, eventDate)
+            _configurationViewModel.name = eventName
+            _configurationViewModel.date = eventDate
             findNavController().navigate(R.id.action_ConfigurationFragment_to_ScannerFragment)
         }
     }

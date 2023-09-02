@@ -12,8 +12,21 @@
         tools:layout="@layout/fragment_configuration">
 
         <action
+            android:id="@+id/action_ConfigurationFragment_to_KeyScannerFragment"
+            app:destination="@id/KeyScannerFragment" />
+        <action
             android:id="@+id/action_ConfigurationFragment_to_ScannerFragment"
             app:destination="@id/ScannerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/KeyScannerFragment"
+        android:name="com.acr_mobile_scanner.KeyScannerFragment"
+        android:label="@string/key_scanner_fragment_label"
+        tools:layout="@layout/fragment_key_scanner">
+
+        <action
+            android:id="@+id/action_KeyScannerFragment_to_ConfigurationFragment"
+            app:destination="@id/ConfigurationFragment" />
     </fragment>
     <fragment
         android:id="@+id/ScannerFragment"

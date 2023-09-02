@@ -4,6 +4,7 @@
     <!-- Strings used for fragments for navigation -->
     <string name="configuration_fragment_label">Konfiguration</string>
     <string name="scanner_fragment_label">Scanner</string>
+    <string name="key_scanner_fragment_label">Public Key Scanner</string>
     <string name="result_fragment_label">Scan Result</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>

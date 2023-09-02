@@ -30,12 +30,10 @@ class ResultErrorFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setFragmentResultListener("scan_result") { _, bundle ->
-            // We use a String here, but any type that can be put in a Bundle is supported.
             val result = bundle.getString("message")
             if (result != null){
                 _binding?.textViewResultErrorMessage?.text = result
             }
-            // Do something with the result.
         }
 
         binding.resultErrorOkButton.setOnClickListener {
