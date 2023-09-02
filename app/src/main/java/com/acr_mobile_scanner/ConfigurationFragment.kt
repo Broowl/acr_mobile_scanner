@@ -6,7 +6,10 @@ import android.preference.PreferenceManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.acr_mobile_scanner.databinding.FragmentConfigurationBinding
@@ -42,10 +45,22 @@ class ConfigurationFragment : Fragment() {
         val displayDate = _configurationViewModel.date ?: Calendar.getInstance().time
 
         binding.editTextEventName.text.append(displayName)
-        binding.editTextEventDateYear.text.append((displayDate.year + 1900).toString().padStart(4, '0'))
-        binding.editTextEventDateMonth.text.append((displayDate.month + 1).toString().padStart(2, '0'))
+        binding.editTextEventDateYear.text.append(
+            (displayDate.year + 1900).toString().padStart(4, '0')
+        )
+        binding.editTextEventDateMonth.text.append(
+            (displayDate.month + 1).toString().padStart(2, '0')
+        )
         binding.editTextEventDateDay.text.append((displayDate.day).toString().padStart(2, '0'))
         binding.editTextPublicKey.text.append(publicKey)
+        binding.viewTextPublicKey.visibility = INVISIBLE
+        binding.editTextPublicKey.visibility = INVISIBLE
+
+        binding.advancedSwitch.setOnCheckedChangeListener { _, checked ->
+            val visibility = if (checked) VISIBLE else INVISIBLE
+            binding.viewTextPublicKey.visibility = visibility
+            binding.editTextPublicKey.visibility = visibility
+        }
 
         binding.configurationOkButton.setOnClickListener {
             val eventName = binding.editTextEventName.text.toString()

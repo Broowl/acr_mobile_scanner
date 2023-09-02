@@ -15,6 +15,7 @@
     <string name="event_date_month_hint">MM</string>
     <string name="event_date_day_hint">DD</string>
     <string name="event_date_separator">-</string>
+    <string name="advanced_switch_label">Advanced</string>
     <string name="public_key">Public key:</string>
     <string name="public_key_hint">-----BEGIN PUBLIC KEY----- ...</string>
     <string name="configuration_ok">Ok</string>

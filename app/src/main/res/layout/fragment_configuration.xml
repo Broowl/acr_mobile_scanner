@@ -9,17 +9,17 @@
         android:id="@+id/viewTextEventName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/event_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/editTextEventName"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editTextEventName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:autofillHints=""
@@ -28,7 +28,7 @@
         android:inputType="text"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/viewTextEventName"
         app:layout_constraintTop_toBottomOf="@+id/viewTextEventName" />
 
     <TextView
@@ -104,6 +104,15 @@
         app:layout_constraintStart_toEndOf="@+id/editTextEventDateMonth"
         app:layout_constraintTop_toBottomOf="@+id/viewTextEventDate" />
 
+    <Switch
+        android:id="@+id/advancedSwitch"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/advanced_switch_label"
+        app:layout_constraintStart_toStartOf="@+id/editTextPublicKey"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEventDateDay" />
+
     <TextView
         android:id="@+id/viewTextPublicKey"
         android:layout_width="0dp"
@@ -112,11 +121,11 @@
         android:text="@string/public_key"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/editTextPublicKey"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEventDateDay" />
+        app:layout_constraintTop_toBottomOf="@+id/advancedSwitch" />
 
     <EditText
         android:id="@+id/editTextPublicKey"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
