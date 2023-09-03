@@ -4,7 +4,6 @@ package com.acr_mobile_scanner
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Size
 import android.view.LayoutInflater
@@ -32,7 +31,6 @@ import com.google.mlkit.vision.common.InputImage
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import androidx.navigation.fragment.findNavController
-import java.util.Date
 
 
 class ScannerFragment : Fragment() {
@@ -41,7 +39,7 @@ class ScannerFragment : Fragment() {
     private val _viewModel: EntityViewModel by activityViewModels()
     private var _camera: Camera? = null
     private var _previewView: PreviewView? = null
-    private var _lastScan: Date? = null
+    private var _valid = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,11 +53,11 @@ class ScannerFragment : Fragment() {
                 Manifest.permission.CAMERA
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(Manifest.permission.CAMERA),
-                CAMERA_PERMISSION_REQUEST_CODE
-            )
+            Toast.makeText(
+                requireContext(),
+                "Camera permission denied. Cannot scan QR codes.",
+                Toast.LENGTH_SHORT
+            ).show()
         } else {
             startCamera()
         }
@@ -104,22 +102,21 @@ class ScannerFragment : Fragment() {
     }
 
     private fun onBarcodeScanned(barCodes: List<Barcode>) {
-        for (barcode in barCodes) {
-            val scannedData: String = barcode.rawValue!!
-            //Toast.makeText(requireContext(), "Scanned: $scannedData", Toast.LENGTH_SHORT)
-            //   .show()
-            val scanResult = _viewModel.scanner!!.processQrCode(scannedData)
-            val time = Calendar.getInstance().time
-            val lastScan = _lastScan
-            if (lastScan != null && (lastScan.time - time.time < 1000)){
-                return // avoid rapid calls to the navigation controller since it can cause a crash
-            }
-            if (scanResult.isSuccess) {
-                findNavController().navigate(R.id.action_ScannerFragment_to_ResultSuccessFragment)
-            } else {
-                setFragmentResult("scan_result", bundleOf("message" to scanResult.errorMessage))
-                findNavController().navigate(R.id.action_ScannerFragment_to_ResultErrorFragment)
-            }
+        if (barCodes.isEmpty()) {
+            return
+        }
+        val barcode = barCodes[0]
+        if (!_valid) { // make sure that the code is only scanned once
+            return
+        }
+        _valid = false
+        val scannedData: String = barcode.rawValue!!
+        val scanResult = _viewModel.scanner!!.processQrCode(scannedData)
+        if (scanResult.isSuccess) {
+            findNavController().navigate(R.id.action_ScannerFragment_to_ResultSuccessFragment)
+        } else {
+            setFragmentResult("scan_result", bundleOf("message" to scanResult.errorMessage))
+            findNavController().navigate(R.id.action_ScannerFragment_to_ResultErrorFragment)
         }
     }
 
@@ -133,34 +130,11 @@ class ScannerFragment : Fragment() {
             .addOnSuccessListener { barCodes ->
                 onBarcodeScanned(barCodes)
             }
-            .addOnFailureListener { e -> }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String?>,
-        grantResults: IntArray
-    ) {
-        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startCamera()
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    "Camera permission denied. Cannot scan QR codes.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
+            .addOnFailureListener { }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _cameraExecutor!!.shutdown()
-    }
-
-
-    companion object {
-        private const val CAMERA_PERMISSION_REQUEST_CODE = 100
     }
 }

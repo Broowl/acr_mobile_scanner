@@ -1,17 +1,17 @@
 <resources>
     <string name="app_name">ACR_Mobile_Scanner</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Configuration</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="configuration_fragment_label">Konfiguration</string>
+    <string name="configuration_fragment_label">Configuration</string>
     <string name="scanner_fragment_label">Scanner</string>
     <string name="key_scanner_fragment_label">Public Key Scanner</string>
     <string name="result_fragment_label">Scan Result</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="event_name">Veranstaltungsname:</string>
-    <string name="event_name_hint">Beispielkonzert</string>
-    <string name="event_date">Veranstaltungsdatum:</string>
+    <string name="event_name">Event name:</string>
+    <string name="event_name_hint">Example Concert</string>
+    <string name="event_date">Event date (YYYY-MM-DD):</string>
     <string name="event_date_year_hint">YYYY</string>
     <string name="event_date_month_hint">MM</string>
     <string name="event_date_day_hint">DD</string>

@@ -60,7 +60,7 @@ class ConfigurationFragment : Fragment() {
         binding.editTextEventDateMonth.text.append(
             (displayDate.month + 1).toString().padStart(2, '0')
         )
-        binding.editTextEventDateDay.text.append((displayDate.day).toString().padStart(2, '0'))
+        binding.editTextEventDateDay.text.append((displayDate.date).toString().padStart(2, '0'))
         binding.editTextPublicKey.text.append(publicKey)
         binding.viewTextPublicKey.visibility = INVISIBLE
         binding.editTextPublicKey.visibility = INVISIBLE
