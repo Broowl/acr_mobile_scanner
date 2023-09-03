@@ -76,23 +76,38 @@ class ConfigurationFragment : Fragment() {
         binding.advancedSwitch.isChecked = advancedTicked
 
         binding.scanPublicKeyButton.setOnClickListener {
+            saveCurrentConfiguration()
             findNavController().navigate(R.id.action_ConfigurationFragment_to_KeyScannerFragment)
         }
 
         binding.configurationOkButton.setOnClickListener {
-            val eventName = binding.editTextEventName.text.toString()
-            val eventDate = Date(
-                binding.editTextEventDateYear.text.toString().toInt() - 1900,
-                binding.editTextEventDateMonth.text.toString().toInt() - 1,
-                binding.editTextEventDateDay.text.toString().toInt()
-            )
-            val publicKey = binding.editTextPublicKey.text.toString()
+            val publicKey = getPublicKeyFromUI()
             sharedPreferences.edit().putString("public_key", publicKey).apply()
-            _entityViewModel.initializeScanner(eventName, eventDate, publicKey)
-            _configurationViewModel.name = eventName
-            _configurationViewModel.date = eventDate
+            _entityViewModel.initializeScanner(getEventNameFromUI(), getEventDateFromUI(), publicKey)
+            saveCurrentConfiguration()
             findNavController().navigate(R.id.action_ConfigurationFragment_to_ScannerFragment)
         }
+    }
+
+    private fun getEventNameFromUI(): String {
+        return binding.editTextEventName.text.toString()
+    }
+
+    private fun getEventDateFromUI(): Date {
+        return Date(
+            binding.editTextEventDateYear.text.toString().toInt() - 1900,
+            binding.editTextEventDateMonth.text.toString().toInt() - 1,
+            binding.editTextEventDateDay.text.toString().toInt()
+        )
+    }
+
+    private fun saveCurrentConfiguration(){
+        _configurationViewModel.name = getEventNameFromUI()
+        _configurationViewModel.date = getEventDateFromUI()
+    }
+
+    private fun getPublicKeyFromUI():String{
+        return binding.editTextPublicKey.text.toString()
     }
 
     override fun onDestroyView() {
