@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ACR_Mobile_Scanner</string>
+    <string name="app_name">ACR Scanner</string>
     <string name="action_settings">Configuration</string>
     <!-- Strings used for fragments for navigation -->
     <string name="configuration_fragment_label">Configuration</string>
