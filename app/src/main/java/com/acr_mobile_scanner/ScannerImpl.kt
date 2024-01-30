@@ -48,7 +48,18 @@ class ScannerImpl {
         _previewView = view.findViewById(R.id.previewView)
         _previewView!!.setOnTouchListener { view, event ->
             view.performClick()
-            return@setOnTouchListener onTouch(event)
+            return@setOnTouchListener when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    true
+                }
+
+                MotionEvent.ACTION_UP -> {
+                    autoFocus(event)
+                    true
+                }
+
+                else -> false // Unhandled event.
+            }
         }
         if (ActivityCompat.checkSelfPermission(
                 context,
@@ -65,22 +76,6 @@ class ScannerImpl {
         }
 
         return view
-    }
-
-    private fun onTouch(event: MotionEvent): Boolean {
-        when (event.action) {
-            MotionEvent.ACTION_DOWN -> {
-                true
-            }
-
-            MotionEvent.ACTION_UP -> {
-                autoFocus(event)
-                true
-            }
-
-            else -> false // Unhandled event.
-        }
-        return false
     }
 
     private fun autoFocus(event: MotionEvent) {
